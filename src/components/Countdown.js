@@ -3,14 +3,12 @@ import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../utils/colors";
 import { fontSizes, spacing } from "../utils/sizes";
 
+const minutesToMillis = (min) => min * 1000 * 60;
+const formatTime = (time) => (time < 10 ? `0${time}` : time);
 export const Countdown = ({ minutes = 20, isPaused, onProgress, onEnd }) => {
-  const minutesToMillis = (min) => min * 1000 * 60;
-  const [millis, setMillis] = useState(minutesToMillis(minutes));
-  const minute = Math.floor(millis / 60000) % 60;
-  const seconds = Math.floor(millis / 1000) % 60;
-  const formatTime = (time) => (time < 10 ? `0${time}` : time);
-
   const interval = useRef(null);
+  const [millis, setMillis] = useState(minutesToMillis(minutes));
+
   const countDown = () => {
     setMillis((time) => {
       if (time === 0) {
@@ -20,7 +18,6 @@ export const Countdown = ({ minutes = 20, isPaused, onProgress, onEnd }) => {
       }
       const timeLeft = time - 1000;
 
-      onProgress(timeLeft / minutesToMillis(minutes));
       return timeLeft;
     });
   };
@@ -28,6 +25,10 @@ export const Countdown = ({ minutes = 20, isPaused, onProgress, onEnd }) => {
   useEffect(() => {
     setMillis(minutesToMillis(minutes));
   }, [minutes]);
+
+  useEffect(() => {
+    onProgress(millis / minutesToMillis(minutes));
+  }, [millis]);
 
   useEffect(() => {
     if (isPaused) {
@@ -38,8 +39,10 @@ export const Countdown = ({ minutes = 20, isPaused, onProgress, onEnd }) => {
     }
     interval.current = setInterval(countDown, 1000);
     return () => clearInterval(interval.current);
-  }, [isPaused, minutes]);
+  }, [isPaused]);
 
+  const minute = Math.floor(millis / 60000) % 60;
+  const seconds = Math.floor(millis / 1000) % 60;
   return (
     <Text style={styles.text}>{`${formatTime(minute)}:${formatTime(
       seconds
