@@ -1,3 +1,4 @@
+import { setStatusBarNetworkActivityIndicatorVisible } from "expo-status-bar";
 import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../utils/colors";
@@ -5,6 +6,7 @@ import { fontSizes, spacing } from "../utils/sizes";
 
 const minutesToMillis = (min) => min * 1000 * 60;
 const formatTime = (time) => (time < 10 ? `0${time}` : time);
+
 export const Countdown = ({ minutes = 20, isPaused, onProgress, onEnd }) => {
   const interval = useRef(null);
   const [millis, setMillis] = useState(minutesToMillis(minutes));
@@ -13,11 +15,8 @@ export const Countdown = ({ minutes = 20, isPaused, onProgress, onEnd }) => {
     setMillis((time) => {
       if (time === 0) {
         clearInterval(interval.current);
-        onEnd();
-        return time;
       }
       const timeLeft = time - 1000;
-
       return timeLeft;
     });
   };
@@ -28,6 +27,9 @@ export const Countdown = ({ minutes = 20, isPaused, onProgress, onEnd }) => {
 
   useEffect(() => {
     onProgress(millis / minutesToMillis(minutes));
+    if (millis === 0) {
+      onEnd();
+    }
   }, [millis]);
 
   useEffect(() => {

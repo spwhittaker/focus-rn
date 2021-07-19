@@ -11,12 +11,11 @@ import { RoundedButton } from "../../components/RoundedButton";
 import { Timing } from "./Timing";
 
 const DEFAULT_TIME = 0.1;
-export const Timer = ({ focusSubject }) => {
+export const Timer = ({ focusSubject, onTimerEnd, clearSubject }) => {
   useKeepAwake();
   const [isStarted, setIsStarted] = useState(false);
   const [minutes, setMinutes] = useState(DEFAULT_TIME);
   const [progress, setProgress] = useState(1);
-
   const onProgress = (progress) => setProgress(progress);
 
   const vibrate = () => {
@@ -33,12 +32,9 @@ export const Timer = ({ focusSubject }) => {
     setMinutes(DEFAULT_TIME);
     setProgress(1);
     setIsStarted(false);
+    onTimerEnd();
   };
-  const changeTime = (min) => {
-    setMinutes(min);
-    setProgress(1);
-    setIsStarted(false);
-  };
+
   return (
     <View style={styles.container}>
       <View style={styles.countdown}>
@@ -61,7 +57,7 @@ export const Timer = ({ focusSubject }) => {
         />
       </View>
       <View style={styles.buttonWrapper}>
-        <Timing changeTime={changeTime} />
+        <Timing changeTime={setMinutes} />
       </View>
       <View style={styles.buttonWrapper}>
         {isStarted ? (
@@ -69,6 +65,15 @@ export const Timer = ({ focusSubject }) => {
         ) : (
           <RoundedButton title="start" onPress={() => setIsStarted(true)} />
         )}
+      </View>
+      <View style={styles.clearSubject}>
+        <RoundedButton
+          title="cancel"
+          size={50}
+          onPress={() => {
+            clearSubject();
+          }}
+        />
       </View>
     </View>
   );
@@ -95,4 +100,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  clearSubject: { paddingBottom: 25, paddingLeft: 25 },
 });

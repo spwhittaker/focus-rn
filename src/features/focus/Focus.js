@@ -5,20 +5,28 @@ import { RoundedButton } from "../../components/RoundedButton.js";
 import { fontSizes, spacing } from "../../utils/sizes";
 import { colors } from "../../utils/colors";
 export const Focus = ({ addSubject }) => {
-  const [tmpItem, setTmpItem] = useState(null);
+  const [subject, setSubject] = useState(null);
+
   return (
     <View style={styles.container}>
-      <View style={styles.titleContainer}>
+      <View style={styles.innerContainer}>
         <Text style={styles.title}>What would you like to focus on?</Text>
         <View style={styles.inputContainer}>
+          {/* <TextInput
+            style={{ flex: 1, marginRight: spacing.md }}
+            onSubmitEditing={({ nativeEvent: { text } }) => {
+              setSubject(text);
+            }}
+          /> */}
           <TextInput
             style={{ flex: 1, marginRight: spacing.md }}
-            onSubmitEditing={({ nativeEvent: { text } }) => setTmpItem(text)}
+            onChangeText={setSubject}
+            value={subject}
           />
           <RoundedButton
             title="+"
             size={50}
-            onPress={() => addSubject(tmpItem)}
+            onPress={() => addSubject(subject)}
           />
         </View>
       </View>
@@ -28,10 +36,10 @@ export const Focus = ({ addSubject }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  titleContainer: {
     flex: 0.5,
+  },
+  innerContainer: {
+    flex: 1,
     padding: spacing.md,
     justifyContent: "center",
   },

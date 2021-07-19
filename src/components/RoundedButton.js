@@ -1,19 +1,41 @@
 import React from "react";
-import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import {
+  Button,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+} from "react-native";
+
 import { colors } from "../utils/colors";
 export const RoundedButton = ({
   style = {},
   textStyle = {},
-  size = 150,
+  size = 125,
   title = "Press me",
   ...props
 }) => {
   return (
-    <TouchableOpacity style={[styles(size).radius, style]}>
-      <Text style={[styles(size).text, textStyle]} onPress={props.onPress}>
+    <TouchableOpacity
+      style={[styles(size).radius, style]}
+      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+    >
+      <Text
+        style={[styles(size).text, textStyle]}
+        onPress={() => props.onPress()}
+      >
         {title}
       </Text>
     </TouchableOpacity>
+
+    /*     <TouchableNativeFeedback style={[styles(size).radius, style]}>
+      <Text
+        style={[styles(size).text, textStyle]}
+        onPress={() => props.onPress()}
+      >
+        {title}
+      </Text>
+    </TouchableNativeFeedback> */
   );
 };
 
