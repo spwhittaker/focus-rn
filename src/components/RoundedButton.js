@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Button,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-} from "react-native";
-
+import { Button, Text, StyleSheet, TouchableOpacity, View } from "react-native";
 import { colors } from "../utils/colors";
 export const RoundedButton = ({
   style = {},
@@ -19,23 +12,10 @@ export const RoundedButton = ({
     <TouchableOpacity
       style={[styles(size).radius, style]}
       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+      onPress={() => props.onPress()}
     >
-      <Text
-        style={[styles(size).text, textStyle]}
-        onPress={() => props.onPress()}
-      >
-        {title}
-      </Text>
+      <Text style={[styles(size).text, textStyle]}>{title}</Text>
     </TouchableOpacity>
-
-    /*     <TouchableNativeFeedback style={[styles(size).radius, style]}>
-      <Text
-        style={[styles(size).text, textStyle]}
-        onPress={() => props.onPress()}
-      >
-        {title}
-      </Text>
-    </TouchableNativeFeedback> */
   );
 };
 
